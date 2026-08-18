@@ -1,0 +1,286 @@
+# ============================================
+# DEPENDENCIES
+# ============================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# ============================================
+# ENVIRONMENT VARIABLES & CONFIG
+# ============================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+
+# Configuration files containing sensitive data
+config/db.js
+config/passport.js
+config/keys.js
+config/secret.js
+config/*.local.js
+
+# ============================================
+# DATABASE
+# ============================================
+# MongoDB
+*.db
+*.sqlite
+*.sqlite3
+data/
+dump/
+*.dump
+
+# ============================================
+# UPLOADS & MEDIA
+# ============================================
+uploads/
+public/uploads/
+public/images/uploads/
+media/
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.webp
+*.mp4
+*.mov
+*.pdf
+*.doc
+*.docx
+
+# But keep default placeholder images
+!public/images/default-avatar.jpg
+!public/images/placeholder.png
+
+# ============================================
+# LOGS
+# ============================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+access.log
+error.log
+combined.log
+
+# ============================================
+# OS FILES
+# ============================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+*.tmp
+*.temp
+
+# ============================================
+# EDITOR CONFIGURATION
+# ============================================
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# IntelliJ / WebStorm / PhpStorm
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+.idea_modules/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+*.un~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+
+# Atom
+.atom/
+
+# ============================================
+# BUILD & DIST
+# ============================================
+dist/
+build/
+*.min.js
+*.min.css
+coverage/
+.nyc_output/
+
+# ============================================
+# TEST COVERAGE
+# ============================================
+coverage/
+.nyc_output/
+jest-coverage/
+test-results/
+*.test.js.snap
+
+# ============================================
+# NPM / YARN / PNPM
+# ============================================
+lib-cov/
+*.seed
+*.pid
+*.gz
+*.pid.lock
+*.sock
+
+# ============================================
+# MISC
+# ============================================
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Session files
+sessions/
+session-store/
+
+# Upload temporary files
+upload_tmp/
+*.filepart
+
+# ============================================
+# DOCKER
+# ============================================
+docker-compose.override.yml
+.dockerignore
+*.dockerfile
+docker/
+Dockerfile
+
+# ============================================
+# SSL CERTIFICATES
+# ============================================
+*.pem
+*.p12
+*.pfx
+*.key
+*.crt
+*.csr
+*.cert
+private.key
+public.pem
+certificates/
+
+# ============================================
+# DEPLOYMENT
+# ============================================
+.vercel/
+.now/
+.serverless/
+.terraform/
+*.tfstate
+*.tfstate.*
+.elasticbeanstalk/
+.ebextensions/
+
+# ============================================
+# DEBUG & PERFORMANCE
+# ============================================
+profile/
+*.cpuprofile
+*.heapsnapshot
+*.heapshot
+
+# ============================================
+# SECRETS
+# ============================================
+*.p12
+*.pfx
+*.key
+*.crt
+*.csr
+*.cert
+secrets/
+credentials.json
+service-account.json
+oauth-credentials.json
+
+# ============================================
+# CACHE
+# ============================================
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
+.next/
+.nuxt/
+.nuxtignore
+.cache-loader
+
+# ============================================
+# SPECIFIC TO MONGOOSE
+# ============================================
+# MongoDB data directory
+/data/
+/db-data/
+mongodb-data/
+
+# ============================================
+# SPECIFIC TO EXPRESS SESSIONS
+# ============================================
+/sessions/
+connect.sid
+session.json
+
+# ============================================
+# SPECIFIC TO PM2
+# ============================================
+.pm2/
+pm2-*.log
+dump.pm2
+
+# ============================================
+# SPECIFIC TO NODEMON
+# ============================================
+nodemon.json
+!.nodemon-example.json
+
+# ============================================
+# SPECIFIC TO ESLINT / PRETTIER
+# ============================================
+.eslintcache
+.stylelintcache
+
+# ============================================
+# TERRAFORM
+# ============================================
+*.tfstate
+*.tfstate.*
+.terraform/
