@@ -1,16 +1,34 @@
-import mongoose, { Schema } from 'mongoose';
-const PostSchema = new mongoose.Schema({
+const mongoose = require('mongoose');
+
+const postSchema = new mongoose.Schema({
   title: {
     type: String,
-    require: true,
+    required: true,
     trim: true,
-    minlength: [3, 'Tiêu dề tối đa 3 ký tự'],
+    minlength: [3, 'Tiêu đề tối thiểu 3 ký tự'],
     maxlength: [200, 'Tiêu đề tối đa 200 ký tự'],
   },
-
-  content: { type: String, require: true, minlength: [10, 'Nội dung tối thiểu 10 ký tự'] },
-  author: { type: Schema.ObjectId, ref: 'Users' },
-  category: { type: String },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
+  content: {
+    type: String,
+    required: true,
+    minlength: [10, 'Nội dung tối thiểu 10 ký tự'],
+  },
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  category: {
+    type: String,
+    default: 'General',
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
+
+module.exports = mongoose.model('Post', postSchema);

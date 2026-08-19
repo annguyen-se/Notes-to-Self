@@ -1,11 +1,11 @@
-import express from 'express';
-import cors from 'cors';
+const express = require('express');
+const cors = require('cors');
 
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-import morgan from 'morgan';
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const morgan = require('morgan');
 
-import authRoutes from './routes/auth.route.js';
+const authRoutes = require('./routes/auth.route.js');
 
 const app = express();
 app.use(morgan('dev'));
