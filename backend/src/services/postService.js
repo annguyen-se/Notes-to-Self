@@ -1,7 +1,8 @@
 const Post = require('../models/post.model');
 
 const getAllPostService = async () => {
-  const posts = (await Post.find().populate('author', 'username email')).sorted({ createdAt: -1 });
+  const posts = await Post.find().populate('author', 'username email').sorted({ createdAt: -1 });
+  return posts;
 };
 
 const getPostByIdService = async (postId) => {
@@ -12,17 +13,21 @@ const getPostByIdService = async (postId) => {
   return post;
 };
 
-const createPostService = async () => {
+const createPostService = async (postData) => {
   const { title, content, author, category } = postData;
+
   if (!title || !content || !author) {
-    throw new Error('Title, content are required');
+    throw new Error('Title, content and author are required');
   }
+
   const post = await Post.create({
     title,
     content,
     author,
-    category,
+    category: category || 'General',
   });
+
+  return await post.populate('author', 'username email');
 };
 
 const updatePostService = async (postId, updateData) => {
@@ -30,7 +35,7 @@ const updatePostService = async (postId, updateData) => {
     postId,
     {
       ...updateData,
-      updateData: Date.now(),
+      updatedAt: Date.now(),
     },
     { new: true, runValidators: true },
   ).populate('author', 'username email');
