@@ -8,19 +8,29 @@ export const useAuthStore = create((set) => ({
   isLoading: false,
   error: null,
 
-  // Action: Đăng nhập
+  // Action: Đăng ký
+  register: async (userData, onSuccess) => {
+    set({ isLoading: true, error: null });
+    try {
+      await authApi.register(userData);
+      set({ isLoading: false, error: null });
+      if (onSuccess) onSuccess();
+    } catch (err) {
+      const errorMessage = err.response?.data?.error || 'Đăng ký thất bại!';
+      set({ error: errorMessage, isLoading: false });
+    }
+  },
+
   login: async (credentials, onSuccess) => {
     set({ isLoading: true, error: null });
     try {
       const response = await authApi.login(credentials);
       const { user, token } = response.data;
 
-      // Lưu vào localStorage
       localStorage.setItem('user', JSON.stringify(user));
-      localStorage.setItem('token', token);
+      localStorage.setItem('token', token || 'token-placeholder');
 
-      // Cập nhật State Zustand
-      set({ user, token, isLoading: false, error: null });
+      set({ user, token: token || 'token-placeholder', isLoading: false, error: null });
 
       if (onSuccess) onSuccess();
     } catch (err) {
@@ -29,13 +39,11 @@ export const useAuthStore = create((set) => ({
     }
   },
 
-  // Action: Đăng xuất
   logout: () => {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
     set({ user: null, token: null, error: null });
   },
 
-  // Action: Xóa báo lỗi
   clearError: () => set({ error: null }),
 }));

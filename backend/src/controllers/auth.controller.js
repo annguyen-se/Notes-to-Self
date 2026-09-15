@@ -1,19 +1,20 @@
 const { registerService, loginService } = require('../services/authService');
+const HTTP_STATUS = require('../constants/httpStatus');
 
 const registerUser = async (req, res) => {
   try {
-    const result = await registerService(req.body);
+    const user = await registerService(req.body);
 
-    if (result.error) {
-      return res.status(400).json({ error: result.error });
-    }
-
-    res.status(201).json({
+    res.status(HTTP_STATUS.CREATED).json({
+      statusCode: HTTP_STATUS.CREATED,
+      success: true,
       message: 'User registered successfully',
-      user: result.user,
+      user,
     });
   } catch (error) {
-    res.status(500).json({
+    res.status(HTTP_STATUS.BAD_REQUEST).json({
+      statusCode: HTTP_STATUS.BAD_REQUEST,
+      success: false,
       error: error.message || 'Registration failed',
     });
   }
@@ -24,20 +25,26 @@ const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({
+        statusCode: HTTP_STATUS.BAD_REQUEST,
+        success: false,
         error: 'Email and password are required',
       });
     }
 
-    const result = await loginService(email, password);
+    const user = await loginService(email, password);
 
-    res.status(200).json({
+    res.status(HTTP_STATUS.OK).json({
+      statusCode: HTTP_STATUS.OK,
+      success: true,
       message: 'Login successful',
-      user: result.user,
-      token: result.token,
+      user,
+      token: 'token-' + user._id,
     });
   } catch (error) {
-    res.status(500).json({
+    res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+      statusCode: HTTP_STATUS.INTERNAL_SERVER_ERROR,
+      success: false,
       error: error.message || 'Login failed',
     });
   }

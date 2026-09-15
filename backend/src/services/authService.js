@@ -16,8 +16,10 @@ const registerService = async (userData) => {
 
   const hashedPassword = await hashPassword(password);
   const newUser = await User.create({ ...userData, password: hashedPassword });
+  const userResponse = newUser.toObject();
+  delete userResponse.password;
 
-  return newUser;
+  return userResponse;
 };
 
 const loginService = async (email, password) => {

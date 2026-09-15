@@ -1,7 +1,7 @@
 const Post = require('../models/post.model');
 
 const getAllPostService = async () => {
-  const posts = await Post.find().populate('author', 'username email').sorted({ createdAt: -1 });
+  const posts = await Post.find().populate('author', 'username email').sort({ createdAt: -1 });
   return posts;
 };
 

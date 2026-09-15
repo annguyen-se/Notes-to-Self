@@ -9,4 +9,4 @@ const hashPassword = async (password) => {
     throw new Error(`Error hashing password: ${error.message}`);
   }
 };
-module.exports = hashPassword;
+module.exports = { hashPassword };
