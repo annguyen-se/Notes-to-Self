@@ -1,3 +1,4 @@
+// src/store/usePostStore.js
 import { create } from 'zustand';
 import { postApi } from '../api/postApi';
 
@@ -11,9 +12,12 @@ export const usePostStore = create((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await postApi.getAll();
-      set({ posts: response.data.data || [], isLoading: false });
+      set({ posts: response.data?.data || [], isLoading: false });
     } catch (err) {
-      set({ error: err.response?.data?.error, isLoading: false });
+      set({
+        error: err.response?.data?.error || 'Không thể tải danh sách bài viết từ máy chủ',
+        isLoading: false,
+      });
     }
   },
 
@@ -21,9 +25,12 @@ export const usePostStore = create((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await postApi.getById(id);
-      set({ currentPost: response.data.data, isLoading: false });
+      set({ currentPost: response.data?.data || null, isLoading: false });
     } catch (err) {
-      set({ error: err.response?.data?.error || 'Không tìm thấy bài viết', isLoading: false });
+      set({
+        error: err.response?.data?.error || 'Không tìm thấy bài viết',
+        isLoading: false,
+      });
     }
   },
 
@@ -31,11 +38,16 @@ export const usePostStore = create((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await postApi.create(postData);
-      const newPost = response.data.data;
-      set((state) => ({ posts: [newPost, ...state.posts], isLoading: false }));
+      const newPost = response.data?.data;
+      if (newPost) {
+        set((state) => ({ posts: [newPost, ...state.posts], isLoading: false }));
+      }
       if (onSuccess) onSuccess();
     } catch (err) {
-      set({ error: err.response?.data?.error || 'Tạo bài viết thất bại', isLoading: false });
+      set({
+        error: err.response?.data?.error || 'Tạo bài viết thất bại',
+        isLoading: false,
+      });
     }
   },
 
@@ -43,7 +55,7 @@ export const usePostStore = create((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await postApi.update(id, updateData);
-      const updatedPost = response.data.data;
+      const updatedPost = response.data?.data;
       set((state) => ({
         posts: state.posts.map((p) => (p._id === id ? updatedPost : p)),
         currentPost: updatedPost,
@@ -51,7 +63,10 @@ export const usePostStore = create((set) => ({
       }));
       if (onSuccess) onSuccess();
     } catch (err) {
-      set({ error: err.response?.data?.error || 'Cập nhật bài viết thất bại', isLoading: false });
+      set({
+        error: err.response?.data?.error || 'Cập nhật bài viết thất bại',
+        isLoading: false,
+      });
     }
   },
 
@@ -65,7 +80,10 @@ export const usePostStore = create((set) => ({
       }));
       if (onSuccess) onSuccess();
     } catch (err) {
-      set({ error: err.response?.data?.error || 'Xóa bài viết thất bại', isLoading: false });
+      set({
+        error: err.response?.data?.error || 'Xóa bài viết thất bại',
+        isLoading: false,
+      });
     }
   },
 
