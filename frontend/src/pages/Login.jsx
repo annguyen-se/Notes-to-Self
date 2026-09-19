@@ -1,14 +1,24 @@
-// src/pages/Login.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../store/useAuthStore';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showColdStartNotice, setShowColdStartNotice] = useState(false);
   const navigate = useNavigate();
 
   const { login, isLoading, error } = useAuthStore();
+
+  useEffect(() => {
+    let timer;
+    if (isLoading) {
+      timer = setTimeout(() => setShowColdStartNotice(true), 3000);
+    } else {
+      setShowColdStartNotice(false);
+    }
+    return () => clearTimeout(timer);
+  }, [isLoading]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,6 +39,14 @@ export default function Login() {
           <div className='zine-notice error' style={{ marginBottom: 'var(--sp-6)' }}>
             <h4 className='zine-notice-title'>Truy cập thất bại</h4>
             <p className='zine-notice-text'>{error}</p>
+          </div>
+        )}
+
+        {showColdStartNotice && (
+          <div className='zine-notice' style={{ marginBottom: 'var(--sp-6)', borderColor: 'var(--color-primary)' }}>
+            <p className='zine-notice-text'>
+              ⏳ Máy chủ đang khởi động lại (gói miễn phí mất ~30-50s cho lần đầu). Vui lòng không tắt trang...
+            </p>
           </div>
         )}
 
@@ -66,7 +84,7 @@ export default function Login() {
             disabled={isLoading}
             className='btn-primary'
             style={{ width: '100%', marginTop: 'var(--sp-2)' }}>
-            {isLoading ? 'Xác thực...' : 'Đăng nhập'}
+            {isLoading ? (showColdStartNotice ? 'Đang khởi động máy chủ...' : 'Xác thực...') : 'Đăng nhập'}
           </button>
         </form>
 

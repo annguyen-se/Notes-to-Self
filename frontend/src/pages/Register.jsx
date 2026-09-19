@@ -1,5 +1,5 @@
 // src/pages/Register.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../store/useAuthStore';
 
@@ -8,9 +8,20 @@ export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [major, setMajor] = useState('Triết học');
+  const [showColdStartNotice, setShowColdStartNotice] = useState(false);
   const navigate = useNavigate();
 
   const { register, isLoading, error } = useAuthStore();
+
+  useEffect(() => {
+    let timer;
+    if (isLoading) {
+      timer = setTimeout(() => setShowColdStartNotice(true), 3000);
+    } else {
+      setShowColdStartNotice(false);
+    }
+    return () => clearTimeout(timer);
+  }, [isLoading]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,6 +42,14 @@ export default function Register() {
           <div className='zine-notice error' style={{ marginBottom: 'var(--sp-6)' }}>
             <h4 className='zine-notice-title'>Đăng ký không thành công</h4>
             <p className='zine-notice-text'>{error}</p>
+          </div>
+        )}
+
+        {showColdStartNotice && (
+          <div className='zine-notice' style={{ marginBottom: 'var(--sp-6)', borderColor: 'var(--color-primary)' }}>
+            <p className='zine-notice-text'>
+              ⏳ Máy chủ đang khởi động lại (gói miễn phí mất ~30-50s cho lần đầu). Vui lòng không tắt trang...
+            </p>
           </div>
         )}
 
@@ -95,7 +114,7 @@ export default function Register() {
             disabled={isLoading}
             className='btn-primary'
             style={{ width: '100%', marginTop: 'var(--sp-2)' }}>
-            {isLoading ? 'Đang tạo hồ sơ...' : 'Hoàn tất đăng ký'}
+            {isLoading ? (showColdStartNotice ? 'Đang khởi động máy chủ...' : 'Đang tạo hồ sơ...') : 'Hoàn tất đăng ký'}
           </button>
         </form>
 
