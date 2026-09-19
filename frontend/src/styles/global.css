@@ -1,5 +1,5 @@
 /* ==========================================================================
-   THE MARGINALIA — DESIGN SYSTEM TOKENS & ARCHITECTURE
+   Notes to self— DESIGN SYSTEM TOKENS & ARCHITECTURE
    Quiet Rebellion Literary Zine Identity
    ========================================================================== */
 
@@ -88,7 +88,9 @@
    CSS RESET & BASE
    ========================================================================== */
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -123,7 +125,9 @@ body {
 a {
   color: inherit;
   text-decoration: none;
-  transition: color var(--transition-ui), opacity var(--transition-ui);
+  transition:
+    color var(--transition-ui),
+    opacity var(--transition-ui);
 }
 
 a:hover {
@@ -141,13 +145,19 @@ button {
   transition: all var(--transition-ui);
 }
 
-button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
 /* Input / Form controls */
-input, textarea, select {
+input,
+textarea,
+select {
   font-family: var(--font-sans);
   font-size: var(--text-sm);
   color: var(--fg);
@@ -155,10 +165,14 @@ input, textarea, select {
   border: 1px solid var(--border);
   border-radius: 0;
   padding: var(--sp-3) var(--sp-4);
-  transition: border-color var(--transition-ui), background-color var(--transition-ui);
+  transition:
+    border-color var(--transition-ui),
+    background-color var(--transition-ui);
 }
 
-input:focus, textarea:focus, select:focus {
+input:focus,
+textarea:focus,
+select:focus {
   border-color: var(--accent);
   background-color: var(--surface);
   outline: none;
@@ -303,7 +317,8 @@ input:focus, textarea:focus, select:focus {
   transition: color var(--transition-ui);
 }
 
-.nav-link:hover, .nav-link.active {
+.nav-link:hover,
+.nav-link.active {
   color: var(--accent);
 }
 

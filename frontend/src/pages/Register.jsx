@@ -78,7 +78,7 @@ export default function Register() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              placeholder='writer@marginalia.press'
+              placeholder='writer@notestoself.press'
             />
           </div>
 
