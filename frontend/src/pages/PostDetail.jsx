@@ -29,10 +29,10 @@ export default function PostDetail() {
 
   if (isLoading) {
     return (
-      <div className="reader-view page-reveal">
-        <div className="zine-notice">
-          <h4 className="zine-notice-title">Đang mở trang văn khố...</h4>
-          <p className="zine-notice-text">Đang đối chiếu và bày biện bản thảo.</p>
+      <div className='reader-view page-reveal'>
+        <div className='zine-notice'>
+          <h4 className='zine-notice-title'>Đang mở trang văn khố...</h4>
+          <p className='zine-notice-text'>Đang đối chiếu và bày biện bản thảo.</p>
         </div>
       </div>
     );
@@ -40,12 +40,12 @@ export default function PostDetail() {
 
   if (error || !currentPost) {
     return (
-      <div className="reader-view page-reveal">
-        <div className="zine-notice error">
-          <h4 className="zine-notice-title">Không Thể Mở Bản Thảo</h4>
-          <p className="zine-notice-text">{error || 'Bản thảo này không tồn tại hoặc đã bị rút lại.'}</p>
+      <div className='reader-view page-reveal'>
+        <div className='zine-notice error'>
+          <h4 className='zine-notice-title'>Không Thể Mở Bản Thảo</h4>
+          <p className='zine-notice-text'>{error || 'Bản thảo này không tồn tại hoặc đã bị rút lại.'}</p>
           <div style={{ marginTop: '16px' }}>
-            <Link to="/" className="link-read">
+            <Link to='/' className='link-read'>
               Quay lại Mục lục
             </Link>
           </div>
@@ -67,58 +67,51 @@ export default function PostDetail() {
   const wordCount = currentPost.content ? currentPost.content.trim().split(/\s+/).length : 0;
   const readTime = Math.max(1, Math.ceil(wordCount / 180));
 
-  // Tách các đoạn văn theo dấu xuống dòng
-  const paragraphs = (currentPost.content || '')
-    .split(/\n\s*\n/)
-    .filter((p) => p.trim().length > 0);
+  const paragraphs = (currentPost.content || '').split(/\n\s*\n/).filter((p) => p.trim().length > 0);
 
   return (
-    <article className="reader-view page-reveal">
-      {/* Nút quay lại */}
-      <nav className="reader-back-nav">
-        <Link to="/" className="reader-back-link">
+    <article className='reader-view page-reveal'>
+      <nav className='reader-back-nav'>
+        <Link to='/' className='reader-back-link'>
           <ArrowLeft size={14} />
           <span>Quay lại Mục lục</span>
         </Link>
       </nav>
 
-      {/* Đầu trang bài viết */}
-      <header className="reader-header">
-        <div className="reader-meta-stamp">
-          <span className="essay-tag-pill">{currentPost.category || 'Tổng hợp'}</span>
+      <header className='reader-header'>
+        <div className='reader-meta-stamp'>
+          <span className='essay-tag-pill'>{currentPost.category || 'Tổng hợp'}</span>
           <span>{formattedDate}</span>
           <span>&bull;</span>
-          <span>{wordCount} từ ({readTime} phút đọc)</span>
+          <span>
+            {wordCount} từ ({readTime} phút đọc)
+          </span>
         </div>
 
-        <h1 className="reader-title">{currentPost.title}</h1>
+        <h1 className='reader-title'>{currentPost.title}</h1>
 
-        <div className="reader-byline-bar">
+        <div className='reader-byline-bar'>
           <div>
-            <span style={{ fontSize: 'var(--text-xs)', color: 'var(--fg-muted)', display: 'block' }}>
-              Chấp bút bởi
-            </span>
-            <span className="reader-author">
+            <span style={{ fontSize: 'var(--text-xs)', color: 'var(--fg-muted)', display: 'block' }}>Chấp bút bởi</span>
+            <span className='reader-author'>
               {currentPost.author?.username || currentPost.author?.email || 'Vô danh'}
             </span>
           </div>
 
           {isOwner && (
-            <div className="reader-actions">
+            <div className='reader-actions'>
               <Link
                 to={`/edit/${currentPost._id}`}
-                className="btn-inline-action"
-                style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}
-              >
+                className='btn-inline-action'
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                 <Edit3 size={14} />
                 <span>Chỉnh sửa</span>
               </Link>
               <button
-                type="button"
+                type='button'
                 onClick={() => setShowDeleteModal(true)}
-                className="btn-inline-action btn-inline-danger"
-                style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}
-              >
+                className='btn-inline-action btn-inline-danger'
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                 <Trash2 size={14} />
                 <span>Xóa bài</span>
               </button>
@@ -127,23 +120,37 @@ export default function PostDetail() {
         </div>
       </header>
 
-      {/* Nội dung bài viết (Có chữ hoa mở đầu Drop Cap ở đoạn đầu) */}
-      <section className="reader-prose">
+      <section className='reader-prose'>
         {paragraphs.map((para, i) => (
           <p key={i}>{para}</p>
         ))}
       </section>
 
-      {/* Chân trang bài viết */}
-      <footer className="reader-footer">
-        <Link to="/" className="reader-back-link">
+      {currentPost.tags && currentPost.tags.length > 0 && (
+        <div
+          style={{
+            display: 'flex',
+            gap: '8px',
+            flexWrap: 'wrap',
+            marginTop: 'var(--sp-6)',
+            marginBottom: 'var(--sp-4)',
+          }}>
+          {currentPost.tags.map((tag, i) => (
+            <span key={i} className='essay-tag-pill' style={{ opacity: 0.85 }}>
+              #{tag}
+            </span>
+          ))}
+        </div>
+      )}
+
+      <footer className='reader-footer'>
+        <Link to='/' className='reader-back-link'>
           <ArrowLeft size={14} />
           <span>Về trang chủ</span>
         </Link>
         <span>Kết thúc bản thảo</span>
       </footer>
 
-      {/* Hộp thoại xác nhận xóa */}
       <DeleteModal
         isOpen={showDeleteModal}
         title={currentPost.title}

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { usePostStore } from '../store/usePostStore';
+import { CATEGORIES } from '../constants/categories';
 
 export default function EditPost() {
   const { id } = useParams();
@@ -10,7 +11,8 @@ export default function EditPost() {
   const { currentPost, fetchPostById, updatePost, isLoading, error } = usePostStore();
 
   const [title, setTitle] = useState('');
-  const [category, setCategory] = useState('Literature');
+  const [category, setCategory] = useState(CATEGORIES[0]);
+  const [tags, setTags] = useState('');
   const [content, setContent] = useState('');
 
   useEffect(() => {
@@ -22,7 +24,8 @@ export default function EditPost() {
   useEffect(() => {
     if (currentPost) {
       setTitle(currentPost.title || '');
-      setCategory(currentPost.category || 'Literature');
+      setCategory(currentPost.category || CATEGORIES[0]);
+      setTags(Array.isArray(currentPost.tags) ? currentPost.tags.join(', ') : '');
       setContent(currentPost.content || '');
     }
   }, [currentPost]);
@@ -31,7 +34,12 @@ export default function EditPost() {
     e.preventDefault();
     if (!title.trim() || !content.trim()) return;
 
-    await updatePost(id, { title, category, content }, () => {
+    const parsedTags = tags
+      .split(',')
+      .map((t) => t.trim())
+      .filter(Boolean);
+
+    await updatePost(id, { title, category, tags: parsedTags, content }, () => {
       navigate(`/post/${id}`);
     });
   };
@@ -92,14 +100,27 @@ export default function EditPost() {
             Chủ đề phân loại
           </label>
           <select id='edit-category' value={category} onChange={(e) => setCategory(e.target.value)}>
-            <option value='Văn chương'>Văn chương</option>
-            <option value='Phê bình'>Phê bình</option>
-            <option value='Công nghệ'>Công nghệ</option>
-            <option value='Tản văn'>Tản văn</option>
-            <option value='Ghi chép'>Ghi chép</option>
-            <option value='Triết học'>Triết học</option>
-            <option value='Tổng hợp'>Tổng hợp</option>
+            {CATEGORIES.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
           </select>
+        </div>
+
+        <div className='form-field'>
+          <label className='field-label' htmlFor='edit-tags'>
+            Thẻ phân loại / Tags (cách nhau bởi dấu phẩy)
+          </label>
+          <input
+            id='edit-tags'
+            type='text'
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+            placeholder='Ví dụ: React, Express, MongoDB...'
+            className='input-title'
+            style={{ fontSize: 'var(--text-base)', fontFamily: 'var(--font-sans)' }}
+          />
         </div>
 
         <div className='form-field'>

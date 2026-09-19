@@ -20,7 +20,8 @@ const postSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    default: 'General',
+    enum: ['Frontend', 'Backend', 'Database', 'DevOps', 'Architecture', 'System Design', 'TIL', 'Soft Skills'],
+    default: 'Architecture',
   },
   createdAt: {
     type: Date,
@@ -29,6 +30,10 @@ const postSchema = new mongoose.Schema({
   updatedAt: {
     type: Date,
     default: Date.now,
+  },
+  tags: {
+    type: [String],
+    default: [],
   },
 });
 

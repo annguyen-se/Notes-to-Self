@@ -14,7 +14,7 @@ const getPostByIdService = async (postId) => {
 };
 
 const createPostService = async (postData) => {
-  const { title, content, author, category } = postData;
+  const { title, content, author, category, tags } = postData;
 
   if (!title || !content || !author) {
     throw new Error('Title, content and author are required');
@@ -24,7 +24,8 @@ const createPostService = async (postData) => {
     title,
     content,
     author,
-    category: category || 'General',
+    category: category || 'Architecture',
+    tags: Array.isArray(tags) ? tags : [],
   });
 
   return await post.populate('author', 'username email');

@@ -3,10 +3,12 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { usePostStore } from '../store/usePostStore';
+import { CATEGORIES } from '../constants/categories';
 
 export default function CreatePost() {
   const [title, setTitle] = useState('');
-  const [category, setCategory] = useState('Văn chương');
+  const [category, setCategory] = useState(CATEGORIES[0]);
+  const [tags, setTags] = useState('');
   const [content, setContent] = useState('');
   const navigate = useNavigate();
 
@@ -16,7 +18,12 @@ export default function CreatePost() {
     e.preventDefault();
     if (!title.trim() || !content.trim()) return;
 
-    await createPost({ title, category, content }, () => {
+    const parsedTags = tags
+      .split(',')
+      .map((t) => t.trim())
+      .filter(Boolean);
+
+    await createPost({ title, category, tags: parsedTags, content }, () => {
       navigate('/');
     });
   };
@@ -71,14 +78,27 @@ export default function CreatePost() {
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           >
-            <option value="Văn chương">Văn chương</option>
-            <option value="Phê bình">Phê bình</option>
-            <option value="Công nghệ">Công nghệ</option>
-            <option value="Tản văn">Tản văn</option>
-            <option value="Ghi chép">Ghi chép</option>
-            <option value="Triết học">Triết học</option>
-            <option value="Tổng hợp">Tổng hợp</option>
+            {CATEGORIES.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
           </select>
+        </div>
+
+        <div className="form-field">
+          <label className="field-label" htmlFor="tags">
+            Thẻ phân loại / Tags (cách nhau bởi dấu phẩy)
+          </label>
+          <input
+            id="tags"
+            type="text"
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+            placeholder="Ví dụ: React, Express, MongoDB..."
+            className="input-title"
+            style={{ fontSize: 'var(--text-base)', fontFamily: 'var(--font-sans)' }}
+          />
         </div>
 
         <div className="form-field">
