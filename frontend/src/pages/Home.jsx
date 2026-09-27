@@ -1,8 +1,8 @@
 // src/pages/Home.jsx
 import { useEffect, useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
-import { Search, Edit3, Trash2 } from 'lucide-react';
+import { Search, Edit3, Trash2, X } from 'lucide-react';
 import { usePostStore } from '../store/usePostStore';
 import { useAuthStore } from '../store/useAuthStore';
 import DeleteModal from '../components/DeleteModal';
@@ -10,6 +10,8 @@ import DeleteModal from '../components/DeleteModal';
 export default function Home() {
   const { posts, fetchPosts, deletePost, isLoading, error } = usePostStore();
   const { user } = useAuthStore();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedTag = searchParams.get('tag') || '';
 
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Tất cả');
@@ -34,15 +36,17 @@ export default function Home() {
     return posts.filter((post) => {
       const matchCategory =
         selectedCategory === 'Tất cả' || post.category?.toLowerCase() === selectedCategory.toLowerCase();
+      const matchTag =
+        !selectedTag || post.tags?.some((t) => t.toLowerCase() === selectedTag.toLowerCase());
       const matchSearch =
         !search ||
         post.title?.toLowerCase().includes(search.toLowerCase()) ||
         post.content?.toLowerCase().includes(search.toLowerCase()) ||
         post.category?.toLowerCase().includes(search.toLowerCase()) ||
         post.tags?.some((t) => t.toLowerCase().includes(search.toLowerCase()));
-      return matchCategory && matchSearch;
+      return matchCategory && matchTag && matchSearch;
     });
-  }, [posts, search, selectedCategory]);
+  }, [posts, search, selectedCategory, selectedTag]);
 
   const confirmDelete = async () => {
     if (deleteTarget) {
@@ -108,6 +112,37 @@ export default function Home() {
       </aside>
 
       <section className='zine-essay-stream'>
+        {selectedTag && (
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: 'var(--sp-2) var(--sp-3)',
+              background: 'var(--surface)',
+              border: '1px solid var(--border)',
+              marginBottom: 'var(--sp-4)',
+            }}>
+            <span style={{ fontSize: 'var(--text-xs)', color: 'var(--fg-muted)' }}>Lọc theo thẻ:</span>
+            <span style={{ fontSize: 'var(--text-xs)', fontWeight: 600, color: 'var(--accent)' }}>#{selectedTag}</span>
+            <button
+              type='button'
+              onClick={() => setSearchParams({})}
+              title='Bỏ lọc thẻ'
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                cursor: 'pointer',
+                color: 'var(--fg-muted)',
+                background: 'none',
+                border: 'none',
+                padding: '2px',
+              }}>
+              <X size={12} />
+            </button>
+          </div>
+        )}
+
         {isLoading && (
           <div className='zine-notice'>
             <h4 className='zine-notice-title'>Đang tra cứu kho lưu trữ...</h4>
@@ -165,13 +200,33 @@ export default function Home() {
                   <p className='essay-excerpt'>{post.content}</p>
 
                   {post.tags && post.tags.length > 0 && (
-                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: 'var(--sp-2)' }}>
+                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: 'var(--sp-2)' }}>
                       {post.tags.map((tag, i) => (
-                        <span
+                        <button
                           key={i}
-                          style={{ fontSize: 'var(--text-xs)', color: 'var(--fg-muted)', fontStyle: 'italic' }}>
+                          type='button'
+                          onClick={() => {
+                            if (selectedTag.toLowerCase() === tag.toLowerCase()) {
+                              setSearchParams({});
+                            } else {
+                              setSearchParams({ tag });
+                            }
+                          }}
+                          style={{
+                            fontSize: 'var(--text-xs)',
+                            color:
+                              selectedTag.toLowerCase() === tag.toLowerCase()
+                                ? 'var(--accent)'
+                                : 'var(--fg-muted)',
+                            fontWeight: selectedTag.toLowerCase() === tag.toLowerCase() ? 600 : 400,
+                            fontStyle: 'italic',
+                            cursor: 'pointer',
+                            background: 'none',
+                            border: 'none',
+                            padding: 0,
+                          }}>
                           #{tag}
-                        </span>
+                        </button>
                       ))}
                     </div>
                   )}

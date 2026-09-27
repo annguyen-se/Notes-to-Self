@@ -136,9 +136,14 @@ export default function PostDetail() {
             marginBottom: 'var(--sp-4)',
           }}>
           {currentPost.tags.map((tag, i) => (
-            <span key={i} className='essay-tag-pill' style={{ opacity: 0.85 }}>
+            <Link
+              key={i}
+              to={`/?tag=${encodeURIComponent(tag)}`}
+              className='essay-tag-pill'
+              style={{ opacity: 0.85, textDecoration: 'none', cursor: 'pointer' }}
+              title={`Lọc bài viết theo thẻ #${tag}`}>
               #{tag}
-            </span>
+            </Link>
           ))}
         </div>
       )}

@@ -787,7 +787,7 @@ select:focus {
    ========================================================================== */
 
 .manuscript-desk {
-  max-width: 720px;
+  max-width: 1280px;
   margin-inline: auto;
 }
 
@@ -838,7 +838,7 @@ select:focus {
 
 .input-title {
   font-family: var(--font-serif);
-  font-size: var(--text-h2);
+  font-size: var(--text-h3);
   line-height: var(--lh-tight);
   padding: var(--sp-3) var(--sp-4);
   background: var(--surface);
@@ -847,9 +847,10 @@ select:focus {
 
 .input-textarea {
   font-family: var(--font-serif);
-  font-size: var(--text-body);
+  font-size: 1.15rem;
   line-height: var(--lh-body);
-  min-height: 320px;
+  min-height: 480px;
+  padding: var(--sp-4) var(--sp-5);
   resize: vertical;
   background: var(--surface);
 }
